@@ -1,0 +1,10 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0F19" />
+      <stop offset="100%" stop-color="#2522A0" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" rx="32" fill="url(#g1)" />
+  <text x="200" y="200" font-size="28" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle" font-family="'Lexend', sans-serif">your photo here</text>
+</svg>
