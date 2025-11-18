@@ -1,0 +1,17 @@
+DnD Solutions: Internal Service Offerings Overview
+
+This document outlines the complete service stack for DnD Solutions, designed to serve as an internal reference for scaling businesses through comprehensive digital optimization.
+
+Consulting and strategic onboarding. This is the initial discovery and strategy phase to diagnose client needs and define a project roadmap. Business analysis includes evaluation of current workflows, revenue streams, and bottlenecks. Digital infrastructure review includes auditing existing websites, social media presence, CRM, and brand assets. Marketing and visibility audit includes analysis of current SEO, ad performance, and market position.
+
+Online presence and SEO. This service focuses on building and enhancing a client's visibility, reputation, and lead generation, particularly through Google. Google Business Profile management includes full creation, verification, and optimization of the GBP, integration with client systems for automatic post-closing review generation, implementation of review growth tracking, and visibility reports. SEO and web optimization includes optimizing existing websites for keyword performance, page speed, and local search rankings, as well as full SEO boosts including on-page, off-page, and technical SEO. Content strategy includes adding optimized copy and blog posts to improve Google visibility, adding reviews and testimonials to the client’s website, exploring partner link opportunities, and ongoing backlink monitoring and ranking improvements. Reporting and analytics includes initial competitor benchmarks and monthly reports on traffic, reviews, and conversions.
+
+Web development and engineering. This includes full-stack development from simple static sites to fully custom secure platforms. Custom website development covers full-stack platforms built with modern frameworks, backend and database integration for storage and authentication, and static sites when backend complexity isn’t needed. Platform features include admin dashboards, inline editing, drag-and-drop image reordering, live previews, and one-click media management. Key components include responsive layouts, sticky navigation, hero sections, dynamic image galleries, about and contact sections, and any custom components requested. Optimization and maintenance includes improving existing sites, migrating content to new builds, and managed services such as hosting, updates, and ongoing support.
+
+Social media and advertising. Paid advertising management covers Google Search Ads, Meta ads, and ongoing optimization. Social media management includes done-for-you Facebook posting, content creation such as weekly highlights and branded posts, reusable branded templates, and monthly summaries.
+
+Graphic design and branding. This includes logo design, graphic assets for marketing campaigns, social media posts, flyers, UI/UX components, and creation of reusable branded templates.
+
+AI services and integrations. This includes developing custom AI solutions and automation pipelines, AI integrations and custom chatbots, automation for business processes, Python scripts for internal tools, and AI-driven website features.
+
+Business optimization and scaling. This high-tier service includes comprehensive analytics, data-driven marketing strategy, end-to-end campaign execution, full-funnel optimization, and strategic packages designed to scale businesses from one revenue level to another.

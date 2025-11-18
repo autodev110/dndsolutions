@@ -2,15 +2,15 @@ import Image from 'next/image'
 
 const founders = [
   {
-    name: 'Founder One',
+    name: 'Dan Nikiforov',
     role: 'Systems Architect & Engineer',
     bio: 'Architects modular infrastructures, AI automations, and data ecosystems that scale with clients.',
     image: '/founder-1.svg',
   },
   {
-    name: 'Founder Two',
-    role: 'Creative & Growth Lead',
-    bio: 'Shapes the visual identity, GTM strategy, and cross-channel storytelling for every build.',
+    name: 'Dominic Julian',
+    role: 'Acquisitions & Growth Strategist',
+    bio: 'Shapes the growth strategy, and cross-channel storytelling for every build.',
     image: '/founder-2.svg',
   },
 ]

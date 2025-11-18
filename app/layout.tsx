@@ -10,7 +10,7 @@ const exo2 = Exo_2({ subsets: ['latin'], variable: '--font-exo2' })
 const lexend = Lexend({ subsets: ['latin'], variable: '--font-lexend' })
 
 export const metadata: Metadata = {
-  title: 'DnD Solutions | Futuristic Digital Systems',
+  title: 'DnD Solutions',
   description:
     'DnD Solutions builds scalable digital ecosystems, blending AI automations, custom platforms, and strategic consulting.',
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import ServiceShowcase from '@/components/home/ServiceShowcase'
 import { Button } from '@/components/ui/button'
@@ -39,16 +40,24 @@ export default function HomePage() {
     <div className="space-y-24">
       <section className="relative min-h-screen overflow-hidden rounded-[2.5rem] border border-white/10 px-8 py-16 text-center shadow-[0_10px_80px_rgba(12,18,35,0.6)] flex flex-col items-center justify-center">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(0,169,255,0.25),_transparent_55%)]" />
-        <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10 mx-auto mb-4 max-w-xl text-sm uppercase tracking-[0.4em] text-accent">
-          Future-Proof Digital Systems
-        </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: -15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="relative z-10 mb-6 flex justify-center"
+        >
+          <span className="relative block h-36 w-[33rem] md:h-44 md:w-[44rem]">
+            <Image src="/dndlogo2.png" alt="DnD Solutions logo" fill className="object-contain" priority />
+          </span>
+        </motion.div>
+        
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10 font-heading text-4xl leading-tight text-white md:text-6xl"
+          className="relative z-10 text-center font-heading text-4xl leading-tight text-white md:text-6xl"
         >
-          DnD Solutions: We Build Scalable Digital Systems.
+          We Build Scalable Digital Systems.
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 30 }}

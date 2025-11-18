@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useMotionValueEvent, useScroll, motion } from 'framer-motion'
 import { useState } from 'react'
@@ -32,10 +33,9 @@ export default function Navbar() {
       )}
       style={{ backdropFilter: 'blur(24px)' }}
     >
-      <Link href="/" className="text-lg font-heading font-semibold tracking-wide text-white">
-        DnD Solutions
+      <Link href="/" className="relative block h-12 w-32">
+        <Image src="/dndlogo3.png" alt="DnD Solutions logo" fill className="object-contain" priority />
       </Link>
-
       <div className="hidden items-center gap-6 md:flex">
         {navLinks.map((link) => (
           <Link key={link.href} href={link.href} className="text-sm text-text-secondary transition hover:text-white">
@@ -46,7 +46,6 @@ export default function Navbar() {
           <Link href="/contact">Start a Project</Link>
         </Button>
       </div>
-
       <div className="md:hidden">
         <Button asChild variant="secondary" className="px-4 py-2 text-xs">
           <Link href="/contact">Start</Link>
