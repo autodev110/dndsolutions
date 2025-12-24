@@ -44,9 +44,9 @@ export default function HomePage() {
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="relative z-10 mb-6 flex justify-center"
+          className="relative z-10 mb-6 flex w-full justify-center px-4 sm:px-8"
         >
-          <span className="relative block h-36 w-[33rem] md:h-44 md:w-[44rem]">
+          <span className="relative block h-32 w-full max-w-[20rem] sm:h-36 sm:max-w-[26rem] md:h-44 md:w-[44rem] md:max-w-none">
             <Image src="/dndlogo2.png" alt="DnD Solutions logo" fill className="object-contain" priority />
           </span>
         </motion.div>

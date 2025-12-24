@@ -13,6 +13,11 @@ export const metadata: Metadata = {
   title: 'DnD Solutions',
   description:
     'DnD Solutions builds scalable digital ecosystems, blending AI automations, custom platforms, and strategic consulting.',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

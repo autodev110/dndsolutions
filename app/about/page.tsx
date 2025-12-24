@@ -6,12 +6,16 @@ const founders = [
     role: 'Systems Architect & Engineer',
     bio: 'Architects modular infrastructures, AI automations, and data ecosystems that scale with clients.',
     image: '/founder-1.svg',
+    email: 'autodev110@gmail.com',
+    linkedin: 'https://www.linkedin.com/in/daniel-nikiforov-02540325a',
   },
   {
     name: 'Dominic Julian',
     role: 'Acquisitions & Growth Strategist',
     bio: 'Shapes the growth strategy, and cross-channel storytelling for every build.',
     image: '/founder-2.svg',
+    email: 'domjulian31@gmail.com',
+    linkedin: 'https://www.linkedin.com/in/daniel-nikiforov-02540325a',
   },
 ]
 
@@ -32,6 +36,18 @@ export default function AboutPage() {
             <h3 className="mt-6 font-heading text-3xl text-white">{founder.name}</h3>
             <p className="text-sm uppercase tracking-[0.4em] text-accent">{founder.role}</p>
             <p className="mt-4 text-sm text-text-secondary">{founder.bio}</p>
+            <p className="mt-3 text-sm text-text-secondary">
+              Contact:{' '}
+              <a href={`mailto:${founder.email}`} className="text-accent hover:text-primary">
+                {founder.email}
+              </a>
+            </p>
+            <p className="mt-1 text-sm text-text-secondary">
+              LinkedIn:{' '}
+              <a href={founder.linkedin} target="_blank" rel="noreferrer" className="text-accent hover:text-primary">
+                View Profile
+              </a>
+            </p>
           </div>
         ))}
       </section>
