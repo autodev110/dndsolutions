@@ -2,14 +2,7 @@
 
 import Marquee from 'react-fast-marquee'
 
-const logos = [
-  'your logo here',
-  'artbyrbarr.com',
-  'Black Diamond Settlement LLC',
-  'Atlas Realty Partners',
-  'Quantum Edge Lending',
-  'Nova Property Group',
-]
+const logos = ['logo placeholder 01', 'logo placeholder 02', 'logo placeholder 03', 'logo placeholder 04', 'logo placeholder 05', 'logo placeholder 06']
 
 export default function ClientMarquee() {
   return (

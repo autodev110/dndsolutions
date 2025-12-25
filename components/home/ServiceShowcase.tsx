@@ -12,6 +12,7 @@ import {
   Share2,
 } from 'lucide-react'
 import Link from 'next/link'
+import LiquidGlass from '@/components/ui/LiquidGlass'
 
 const services = [
   {
@@ -69,9 +70,11 @@ export default function ServiceShowcase() {
         {services.map((service, index) => {
           const Icon = service.icon
           return (
-            <motion.div
+            <LiquidGlass
+              as={motion.div}
+              variant="card"
               key={service.title}
-              className="frosted-glass flex flex-col gap-4 border border-white/10 p-6 transition-all hover:border-accent hover:shadow-[0_0_40px_rgba(0,255,171,0.12)]"
+              className="flex flex-col gap-4 p-7 transition-transform duration-300"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -80,10 +83,10 @@ export default function ServiceShowcase() {
               <Icon className="h-10 w-10 text-[#00FFAB]" />
               <h3 className="font-heading text-2xl text-white">{service.title}</h3>
               <p className="text-sm text-text-secondary">{service.description}</p>
-              <Link href="/contact" className="mt-auto text-sm font-semibold text-[#00FFAB] transition hover:text-accent-pink">
+              <Link href="/contact" className="mt-auto text-sm font-semibold text-[#00FFAB] transition hover:text-accent">
                 Learn More →
               </Link>
-            </motion.div>
+            </LiquidGlass>
           )
         })}
       </motion.div>

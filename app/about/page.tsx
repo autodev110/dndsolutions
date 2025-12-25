@@ -1,73 +1,35 @@
-import Image from 'next/image'
-
-const founders = [
-  {
-    name: 'Dan Nikiforov',
-    role: 'Systems Architect & Engineer',
-    bio: 'Architects modular infrastructures, AI automations, and data ecosystems that scale with clients.',
-    image: '/founder-1.svg',
-    email: 'autodev110@gmail.com',
-    linkedin: 'https://www.linkedin.com/in/daniel-nikiforov-02540325a',
-  },
-  {
-    name: 'Dominic Julian',
-    role: 'Acquisitions & Growth Strategist',
-    bio: 'Shapes the growth strategy, and cross-channel storytelling for every build.',
-    image: '/founder-2.svg',
-    email: 'domjulian31@gmail.com',
-    linkedin: 'https://www.linkedin.com/in/daniel-nikiforov-02540325a',
-  },
-]
+import LiquidGlass from '@/components/ui/LiquidGlass'
 
 export default function AboutPage() {
   return (
-    <div className="space-y-16">
+    <div className="space-y-16 no-hover-zone pt-16">
       <header className="space-y-4">
         <h1 className="font-heading text-5xl text-white">About DnD Solutions</h1>
-        <p className="text-lg text-text-secondary">Two founders, one obsession: curate digital systems that feel futuristic, perform flawlessly, and grow businesses.</p>
+        <p className="text-lg text-text-secondary">A technical consulting and engineering firm building systems for modern businesses.</p>
       </header>
 
-      <section className="grid gap-6 md:grid-cols-2">
-        {founders.map((founder) => (
-          <div key={founder.name} className="frosted-glass border border-white/10 p-6">
-            <div className="relative h-64 w-full overflow-hidden rounded-2xl">
-              <Image src={founder.image} alt={founder.name} fill className="object-cover" />
-            </div>
-            <h3 className="mt-6 font-heading text-3xl text-white">{founder.name}</h3>
-            <p className="text-sm uppercase tracking-[0.4em] text-accent">{founder.role}</p>
-            <p className="mt-4 text-sm text-text-secondary">{founder.bio}</p>
-            <p className="mt-3 text-sm text-text-secondary">
-              Contact:{' '}
-              <a href={`mailto:${founder.email}`} className="text-accent hover:text-primary">
-                {founder.email}
-              </a>
-            </p>
-            <p className="mt-1 text-sm text-text-secondary">
-              LinkedIn:{' '}
-              <a href={founder.linkedin} target="_blank" rel="noreferrer" className="text-accent hover:text-primary">
-                View Profile
-              </a>
-            </p>
-          </div>
-        ))}
-      </section>
-
-      <section className="space-y-6">
+      <LiquidGlass as="section" variant="panel" className="space-y-6 p-10">
         <h2 className="font-heading text-3xl text-white">Our Story</h2>
         <p className="text-text-secondary">
-          DnD Solutions was born from curating better workflows for clients frustrated with clunky tech stacks. We started as builders who fixed broken sites, patched together CRMs, and streamlined launch checklists. Quickly the work evolved—clients asked for unified dashboards, faster reviews, and AI-powered routines.
+          DnD Solutions was born from seeing a pattern we couldn’t ignore: businesses with real potential held back by unoptimized systems, outdated websites, and poor online visibility. We started by helping small teams fix what was broken—cleaning up sites, repairing digital presence, and streamlining the workflows that slowed growth.
+
+As those early clients improved, expectations grew. Fixes turned into systems. One-off optimizations became unified dashboards, automated review pipelines, faster launches, and AI-driven routines. At the same time, we applied the same principles internally—optimizing how we worked, scaled, and delivered—proving the model before offering it at larger scale.
+
+Today, DnD Solutions designs and engineers full-scale growth systems: digital audits, SEO flywheels, social and operational automation, custom backend platforms, and continuous optimization labs. Every engagement is built with a single focus—aligning strategy and execution to move the metrics that actually matter.
+
+We’re not here to add tools to the stack. We’re here to build systems that compound.
         </p>
         <p className="text-text-secondary">
           Today we choreograph full-scale systems: digital audits, SEO flywheels, social automations, backend platforms, and optimization labs. Every engagement is a curated experience with a single mission—move the metrics that matter.
         </p>
-      </section>
+      </LiquidGlass>
 
-      <section className="rounded-3xl border border-white/10 bg-white/5 p-10 text-center shadow-[0_0_40px_rgba(0,169,255,0.15)]">
+      <LiquidGlass as="section" variant="panel" className="p-12 text-center">
         <h2 className="font-heading text-3xl text-white">Our Mission</h2>
         <blockquote className="mx-auto mt-6 max-w-3xl text-2xl text-white">
-          “We build digital systems that don’t just look good — they perform, scale, and evolve with your business.”
+          “We build digital systems designed to perform, scale, and evolve alongside your business.”
         </blockquote>
-      </section>
+      </LiquidGlass>
     </div>
   )
 }

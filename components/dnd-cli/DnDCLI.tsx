@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import LiquidGlass from '@/components/ui/LiquidGlass'
+import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 
 type ChatMessage = {
@@ -13,10 +15,12 @@ type ChatMessage = {
   content: string
 }
 
+const TOKEN_LIMIT = 800
+
 const examplePrompts = [
   'What does your Web Development & Engineering package include?',
   'Can you help my business get more leads from Google?',
-  'How do your AI services and automations actually work?',
+  'Are you able to create a digital storefront for my business and market it?',
   'What would you recommend for a brand-new small business website?',
 ]
 
@@ -30,6 +34,37 @@ const initialMessages: ChatMessage[] = [
 ]
 
 const createId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
+
+const suspiciousClientPhrases = [
+  'ignore previous',
+  'ignore all instructions',
+  'forget these instructions',
+  'system prompt',
+  'prompt injection',
+  'jailbreak',
+  'developer mode',
+  'bypass security',
+  'exploit',
+  'malware',
+  'sql injection',
+  'drop table',
+]
+
+const linkRegex = /(https?:\/\/|www\.)/i
+
+const guardClientInput = (input: string) => {
+  const normalized = input.toLowerCase()
+
+  if (linkRegex.test(input)) {
+    return 'Please remove any links from your request.'
+  }
+
+  if (suspiciousClientPhrases.some((phrase) => normalized.includes(phrase))) {
+    return 'Your request appears to violate our usage policy and was blocked.'
+  }
+
+  return null
+}
 
 const ThinkingDots = ({ className }: { className?: string }) => (
   <div className={cn('flex items-center gap-1', className)}>
@@ -45,7 +80,8 @@ export default function DnDCLI() {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages)
   const [inputValue, setInputValue] = useState('')
   const [isThinking, setIsThinking] = useState(false)
-  const thinkingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const abortControllerRef = useRef<AbortController | null>(null)
   const messagesEndRef = useRef<HTMLDivElement | null>(null)
 
   const isPreviewVisible = !isOpen && isHoveringLauncher
@@ -58,36 +94,100 @@ export default function DnDCLI() {
 
   useEffect(() => {
     return () => {
-      if (thinkingTimeoutRef.current) {
-        clearTimeout(thinkingTimeoutRef.current)
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
       }
     }
   }, [])
 
-  const simulateAssistantReply = useCallback((_: string) => {
-    if (thinkingTimeoutRef.current) {
-      clearTimeout(thinkingTimeoutRef.current)
-    }
-    setIsThinking(true)
+  const sendPromptToAssistant = useCallback(
+    async (prompt: string) => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
 
-    thinkingTimeoutRef.current = setTimeout(() => {
+      const controller = new AbortController()
+      abortControllerRef.current = controller
+      setIsThinking(true)
+      setErrorMessage(null)
+
+      try {
+        const response = await fetch('/api/dnd-cli', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: prompt }),
+          signal: controller.signal,
+        })
+
+        const data = await response.json()
+
+        if (!response.ok || !data?.message) {
+          const serverMessage =
+            data?.error ?? 'The assistant could not respond at the moment. Please try again shortly.'
+
+          setErrorMessage(serverMessage)
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: createId(),
+              role: 'system',
+              content: serverMessage,
+            },
+          ])
+          return
+        }
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: createId(),
+            role: 'assistant',
+            content: data.message,
+          },
+        ])
+      } catch (error) {
+        if ((error as Error).name === 'AbortError') {
+          return
+        }
+
+        const networkMessage = 'We could not reach the assistant. Please check your connection and try again.'
+        setErrorMessage(networkMessage)
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: createId(),
+            role: 'system',
+            content: networkMessage,
+          },
+        ])
+      } finally {
+        setIsThinking(false)
+        abortControllerRef.current = null
+      }
+    },
+    [],
+  )
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const trimmed = inputValue.trim()
+    if (!trimmed || isThinking) return
+
+    const guardMessage = guardClientInput(trimmed)
+    if (guardMessage) {
+      setErrorMessage(guardMessage)
       setMessages((prev) => [
         ...prev,
         {
           id: createId(),
-          role: 'assistant',
-          content:
-            'This is a placeholder response from DnD CLI.\n\nIn production, this will be powered by your secured Gemini backend, answering specifically about DnD Solutions’ services, process, and offerings.',
+          role: 'system',
+          content: guardMessage,
         },
       ])
-      setIsThinking(false)
-    }, 900)
-  }, [])
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const trimmed = inputValue.trim()
-    if (!trimmed || isThinking) return
+      return
+    }
 
     const userMessage: ChatMessage = {
       id: createId(),
@@ -97,17 +197,21 @@ export default function DnDCLI() {
 
     setMessages((prev) => [...prev, userMessage])
     setInputValue('')
-    simulateAssistantReply(trimmed)
+    await sendPromptToAssistant(trimmed)
   }
 
   const handleExampleClick = (prompt: string) => {
     setInputValue(prompt)
+    setErrorMessage(null)
   }
 
   const closePanel = () => {
     setIsOpen(false)
     setIsHoveringLauncher(false)
+    setErrorMessage(null)
   }
+
+  const isTokenLimitReached = inputValue.length >= TOKEN_LIMIT
 
   return (
     <div className="pointer-events-none fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-4">
@@ -118,13 +222,15 @@ export default function DnDCLI() {
       >
         <AnimatePresence>
           {isPreviewVisible && (
-            <motion.div
+            <LiquidGlass
+              as={motion.div}
+              variant="card"
               key="dnd-cli-preview"
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ duration: 0.25 }}
-              className="frosted-glass dnd-cli-terminal-bg mb-4 w-80 border border-border px-4 py-4 text-left text-xs text-text-secondary shadow-xl"
+              className="dnd-cli-terminal-bg mb-4 w-80 px-5 py-5 text-left text-xs text-text-secondary shadow-xl"
             >
               <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-text-muted">DnD CLI · preview</p>
               <p className="mt-3 font-mono text-[12px] text-text-secondary">
@@ -134,22 +240,24 @@ export default function DnDCLI() {
                 <ThinkingDots />
                 <span>system idle · ready for input</span>
               </div>
-            </motion.div>
+            </LiquidGlass>
           )}
         </AnimatePresence>
 
-        <motion.button
+        <LiquidGlass
+          as={motion.button}
+          variant="fab"
           type="button"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.96 }}
           onClick={() => setIsOpen(true)}
-          className="relative flex h-14 w-14 items-center justify-center rounded-full border border-border bg-primary text-lg font-mono text-black shadow-[0_0_25px_rgba(0,255,171,0.35)] transition-colors hover:bg-primary-hover"
+          className="relative flex h-14 w-14 items-center justify-center rounded-full text-lg font-mono text-white shadow-[0_12px_30px_rgba(40,120,255,0.45)] transition-colors"
         >
-          <span className="text-2xl text-white" aria-hidden>
+          <span className="text-2xl" aria-hidden>
             &gt;_
           </span>
           <span className="sr-only">Open DnD CLI</span>
-        </motion.button>
+        </LiquidGlass>
       </div>
 
       <AnimatePresence>
@@ -162,7 +270,7 @@ export default function DnDCLI() {
             transition={{ duration: 0.25 }}
             className="pointer-events-auto fixed bottom-24 right-6 z-[70] w-[380px] max-w-[90vw]"
           >
-            <div className="frosted-glass dnd-cli-terminal-bg border border-border shadow-2xl">
+            <div className="frosted-glass dnd-cli-terminal-bg border border-white/10 px-2 py-2 shadow-2xl" style={{ backdropFilter: 'blur(24px)' }}>
               <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
                 <div className="space-y-1">
                   <div className="flex items-center gap-3 font-mono text-xs text-text-secondary">
@@ -171,17 +279,14 @@ export default function DnDCLI() {
                     </span>
                     DnD CLI · Service Assistant
                   </div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">
-                    scope: questions about DnD Solutions only
-                  </p>
                 </div>
                 <button
                   type="button"
                   onClick={closePanel}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/80 text-sm font-bold text-black transition hover:bg-accent"
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/80 text-black transition hover:bg-accent"
                   aria-label="Close DnD CLI"
                 >
-                  ×
+                  <X className="h-4 w-4" />
                 </button>
               </div>
 
@@ -221,16 +326,41 @@ export default function DnDCLI() {
                       ))}
                     </div>
                   </div>
-                  <form onSubmit={handleSubmit} className="mt-4 flex gap-3">
-                    <Input
+                  <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+                    <Textarea
                       value={inputValue}
-                      onChange={(event) => setInputValue(event.target.value)}
+                      maxLength={TOKEN_LIMIT}
+                      onChange={(event) => {
+                        setInputValue(event.target.value)
+                        if (errorMessage) {
+                          setErrorMessage(null)
+                        }
+                      }}
                       placeholder="> Ask a question about DnD Solutions…"
-                      className="flex-1 border border-border bg-black/40 font-mono text-sm text-white placeholder:text-text-muted"
+                      className="min-h-[90px] border border-border bg-black/40 font-mono text-sm text-white placeholder:text-text-muted"
                     />
-                    <Button type="submit" size="sm" className="min-w-[72px] font-mono" disabled={isThinking}>
-                      {isThinking ? '…' : 'Send'}
-                    </Button>
+                    <div className="flex items-center gap-3">
+                      <Button
+                        type="submit"
+                        size="sm"
+                        className="min-w-[72px] font-mono"
+                        disabled={isThinking || !inputValue.trim()}
+                      >
+                        {isThinking ? '…' : 'Send'}
+                      </Button>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">
+                        {inputValue.length}/{TOKEN_LIMIT} tokens
+                      </p>
+                    </div>
+                    {isTokenLimitReached && (
+                      <p className="font-mono text-[11px] text-accent">Token limit reached. Remove characters to continue typing.</p>
+                    )}
+                    {errorMessage && (
+                      <p className="font-mono text-[11px] text-red-400">{errorMessage}</p>
+                    )}
+                    <p className="font-mono text-[10px] text-text-muted">
+                      Experimental AI assistant — responses may contain errors. Please verify critical details.
+                    </p>
                   </form>
                 </div>
               </div>

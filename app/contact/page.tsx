@@ -1,4 +1,5 @@
 import ContactForm from '@/components/forms/ContactForm'
+import LiquidGlass from '@/components/ui/LiquidGlass'
 
 const steps = [
   { title: 'Discovery Call', description: 'Understand goals, budget, and timelines.' },
@@ -9,13 +10,13 @@ const steps = [
 
 export default function ContactPage() {
   return (
-    <div className="space-y-16">
+    <div className="space-y-16 pt-16">
       <header className="space-y-4 text-center">
         <h1 className="font-heading text-5xl text-white">Start Your Project</h1>
         <p className="text-lg text-text-secondary">Tell us about your roadmap—then we will co-build the system that gets you there.</p>
       </header>
 
-      <section className="frosted-glass border border-white/10 p-8">
+      <LiquidGlass as="section" variant="panel" className="no-hover-glass p-10">
         <div className="flex flex-col gap-8 lg:flex-row">
           {steps.map((step, index) => (
             <div key={step.title} className="flex-1">
@@ -32,11 +33,11 @@ export default function ContactPage() {
             </div>
           ))}
         </div>
-      </section>
+      </LiquidGlass>
 
-      <section className="frosted-glass border border-white/10 p-8">
+      <LiquidGlass as="section" variant="panel" className="no-hover-glass p-10">
         <ContactForm />
-      </section>
+      </LiquidGlass>
     </div>
   )
 }

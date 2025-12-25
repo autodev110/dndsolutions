@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import ServiceShowcase from '@/components/home/ServiceShowcase'
+import LiquidGlass from '@/components/ui/LiquidGlass'
 import { Button } from '@/components/ui/button'
 
 const demoBlocks = [
@@ -27,18 +28,23 @@ const demoBlocks = [
 const outcomes = [
   {
     title: 'Technical Stack View',
-    bullets: ['Next.js + Supabase platforms', 'Automations, bots, and pipelines', 'Observability baked into every release'],
+    bullets: ['Modern full-stack JS frameworkes with scalable, secure SQL backends', 'Automation pipelines, bots, and cross-system integrations', 'Custom dashboards, admin tools, and secure operational interfaces'],
   },
   {
     title: 'Business Impact View',
-    bullets: ['Operations streamlined across teams', 'Acquisition costs reduced via attribution clarity', 'Scalable infrastructure & rapid experiments'],
+    bullets: ['Outcome-driven systems designed to support measurable growth', 'Streamlined operations across teams, tools, and workflows', 'Scalable infrastructure enabling rapid testing and iteration'],
   },
 ]
 
 export default function HomePage() {
   return (
     <div className="space-y-24">
-      <section className="relative min-h-screen overflow-hidden rounded-[2.5rem] border border-white/10 px-8 py-16 text-center shadow-[0_10px_80px_rgba(12,18,35,0.6)] flex flex-col items-center justify-center">
+      <LiquidGlass
+        as="section"
+        variant="hero"
+        className="relative flex min-h-[80vh] flex-col items-center justify-center overflow-hidden px-8 py-16 text-center"
+        /* Adjust min-h-[75vh] / padding here to control hero height */
+      >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(0,169,255,0.25),_transparent_55%)]" />
         <motion.div
           initial={{ opacity: 0, y: -15 }}
@@ -65,7 +71,7 @@ export default function HomePage() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="relative z-10 mx-auto mt-6 max-w-2xl text-lg text-text-secondary"
         >
-          From custom AI pipelines to full-stack web platforms, we optimize and automate your business from X to Y.
+          From advertising & SEO to enterprise-grade software, we design, build, and automate systems that grow and scale your business.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -80,11 +86,11 @@ export default function HomePage() {
             <a href="#services">See Our Work</a>
           </Button>
         </motion.div>
-      </section>
+      </LiquidGlass>
 
       <section className="grid gap-8 lg:grid-cols-2">
         {outcomes.map((view) => (
-          <div key={view.title} className="frosted-glass border border-white/5 p-8">
+          <LiquidGlass key={view.title} variant="panel" className="p-9 transition-transform duration-300">
             <p className="text-xs uppercase tracking-[0.4em] text-accent">{view.title}</p>
             <h3 className="mt-4 font-heading text-3xl text-white">{view.title === 'Technical Stack View' ? 'Engineering-first perspective' : 'Outcome-focused blueprint'}</h3>
             <ul className="mt-6 space-y-3 text-sm text-text-secondary">
@@ -95,7 +101,7 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
-          </div>
+          </LiquidGlass>
         ))}
       </section>
 
@@ -111,9 +117,11 @@ export default function HomePage() {
         </div>
         <div className="grid gap-6 md:grid-cols-2">
           {demoBlocks.map((block, index) => (
-            <motion.div
+            <LiquidGlass
+              as={motion.div}
+              variant="card"
               key={block.title}
-              className="frosted-glass border border-white/5 p-6"
+              className="flex flex-col p-7 transition-transform duration-300"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -128,15 +136,15 @@ export default function HomePage() {
                 <div className="rounded-lg border border-white/5 px-3 py-2 text-center">Desktop</div>
                 <div className="rounded-lg border border-white/5 px-3 py-2 text-center">Mobile</div>
               </div>
-            </motion.div>
+            </LiquidGlass>
           ))}
         </div>
       </section>
 
-      <section className="rounded-3xl border border-white/10 bg-gradient-to-br from-transparent via-[#111731] to-[#05070f] p-10 text-center">
+      <LiquidGlass as="section" variant="panel" className="p-12 text-center transition-transform duration-300">
         <h3 className="font-heading text-3xl text-white">Your Project Starts Here</h3>
         <p className="mx-auto mt-4 max-w-2xl text-text-secondary">
-          We orchestrate strategy, product, and automation as one system. Tap in when you are ready for a partner that codes and consults.
+          We design and build integrated systems that support real growth. Connect with us when you’re ready to operate at the next level.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Button asChild>
@@ -146,7 +154,7 @@ export default function HomePage() {
             <a href="/resources">Explore Resources</a>
           </Button>
         </div>
-      </section>
+      </LiquidGlass>
     </div>
   )
 }

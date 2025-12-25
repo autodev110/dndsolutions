@@ -1,29 +1,30 @@
 import ClientMarquee from '@/components/resources/ClientMarquee'
+import LiquidGlass from '@/components/ui/LiquidGlass'
 
 const caseStudies = [
   {
-    client: 'Black Diamond Settlement',
-    challenge: 'Fragmented workflows after closing packages.',
-    solution: 'Automated GBP posts, live dashboards, and templated content ops.',
-    results: '+84% review capture rate & 32% faster fulfillment.',
+    client: 'Case Study Placeholder 01',
+    challenge: 'Describe a challenge here once real case studies are ready.',
+    solution: 'Explain the solution once the engagement is completed.',
+    results: 'Share measurable outcomes when available.',
   },
   {
-    client: 'Atlas Realty Partners',
-    challenge: 'Marketing funnel stalled at nurture stage.',
-    solution: 'Rebuilt CRM touchpoints, AI follow-up bots, and KPI cockpit.',
-    results: '2.3x booked consultations within 60 days.',
+    client: 'Case Study Placeholder 02',
+    challenge: 'Describe a challenge here once real case studies are ready.',
+    solution: 'Explain the solution once the engagement is completed.',
+    results: 'Share measurable outcomes when available.',
   },
   {
-    client: 'Nova Property Group',
-    challenge: 'Legacy GoDaddy site could not convert mobile leads.',
-    solution: 'Next.js landing system with CMS + social automation.',
-    results: 'Bounce rate down 41% with 4.8% lead form conversion.',
+    client: 'Case Study Placeholder 03',
+    challenge: 'Describe a challenge here once real case studies are ready.',
+    solution: 'Explain the solution once the engagement is completed.',
+    results: 'Share measurable outcomes when available.',
   },
   {
-    client: 'Quantum Edge Lending',
-    challenge: 'Compliance-heavy document tracking slowed deals.',
-    solution: 'Custom admin portal with AI doc ingestion + alerts.',
-    results: 'Saved 20+ hours monthly and zero missed renewals.',
+    client: 'Case Study Placeholder 04',
+    challenge: 'Describe a challenge here once real case studies are ready.',
+    solution: 'Explain the solution once the engagement is completed.',
+    results: 'Share measurable outcomes when available.',
   },
 ]
 
@@ -35,7 +36,7 @@ const blogPosts = [
 
 export default function ResourcesPage() {
   return (
-    <div className="space-y-16">
+    <div className="space-y-16 pt-16">
       <header className="space-y-4">
         <h1 className="font-heading text-5xl text-white">Resources, Case Studies & Clients</h1>
         <p className="text-lg text-text-secondary">Proof of work, learnings, and the partners who trust us with mission-critical systems.</p>
@@ -50,14 +51,14 @@ export default function ResourcesPage() {
         <h2 className="font-heading text-3xl text-white">Featured Case Studies</h2>
         <div className="grid gap-6 md:grid-cols-2">
           {caseStudies.map((study) => (
-            <div key={study.client} className="frosted-glass border border-white/10 p-6">
+            <LiquidGlass key={study.client} variant="panel" className="p-7">
               <p className="text-xs uppercase tracking-[0.3em] text-text-muted">{study.client}</p>
               <div className="mt-4 space-y-2 text-sm text-text-secondary">
                 <p><span className="font-semibold text-white">Challenge:</span> {study.challenge}</p>
                 <p><span className="font-semibold text-white">Solution:</span> {study.solution}</p>
                 <p className="text-accent">Results: {study.results}</p>
               </div>
-            </div>
+            </LiquidGlass>
           ))}
         </div>
       </section>
@@ -66,11 +67,11 @@ export default function ResourcesPage() {
         <h2 className="font-heading text-3xl text-white">Our Insights</h2>
         <div className="grid gap-6 md:grid-cols-3">
           {blogPosts.map((post) => (
-            <article key={post.title} className="frosted-glass border border-white/10 p-6">
+            <LiquidGlass as="article" key={post.title} variant="card" className="p-7">
               <p className="text-xs uppercase tracking-[0.4em] text-accent">{post.tag}</p>
               <h3 className="mt-4 font-heading text-2xl text-white">{post.title}</h3>
               <p className="mt-3 text-sm text-text-secondary">Coming soon — industry notes, playbooks, and field reports curated by DnD.</p>
-            </article>
+            </LiquidGlass>
           ))}
         </div>
       </section>
