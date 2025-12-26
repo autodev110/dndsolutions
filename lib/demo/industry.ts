@@ -42,7 +42,7 @@ export const industryProfiles: IndustryProfile[] = [
       },
       demos: {
         sectionTitle: 'Financial-grade systems, demonstrated live',
-        sectionSubtitle: 'Explore builder overlays, tuned backgrounds, and KPI funnel simulators for regulated growth.',
+        sectionSubtitle: 'Customize this site to preview builder overlays, tuned backgrounds, and KPI funnels for regulated growth.',
       },
       cta: {
         primary: 'Schedule a Growth Brief',
@@ -75,7 +75,7 @@ export const industryProfiles: IndustryProfile[] = [
       },
       demos: {
         sectionTitle: 'Patient-ready systems, demonstrated live',
-        sectionSubtitle: 'Preview builder overlays, calm background profiles, and KPI funnel simulators for care teams.',
+        sectionSubtitle: 'Customize this site to preview calm overlays, background profiles, and KPI funnels for care teams.',
       },
       cta: {
         primary: 'Book a Care Systems Call',
@@ -108,7 +108,7 @@ export const industryProfiles: IndustryProfile[] = [
       },
       demos: {
         sectionTitle: 'Operational systems, demonstrated live',
-        sectionSubtitle: 'See builder overlays, operational visuals, and KPI simulators that surface throughput.',
+        sectionSubtitle: 'Customize this site to preview operational overlays, background tuning, and KPI funnels that surface throughput.',
       },
       cta: {
         primary: 'Plan an Operations Review',
@@ -141,7 +141,7 @@ export const industryProfiles: IndustryProfile[] = [
       },
       demos: {
         sectionTitle: 'SaaS systems, demonstrated live',
-        sectionSubtitle: 'Preview builder overlays, background engines, and KPI funnel simulators for growth teams.',
+        sectionSubtitle: 'Customize this site to preview builder overlays, growth-ready backgrounds, and KPI funnels for SaaS teams.',
       },
       cta: {
         primary: 'Book a SaaS Build Call',
@@ -174,7 +174,7 @@ export const industryProfiles: IndustryProfile[] = [
       },
       demos: {
         sectionTitle: 'Retail systems, demonstrated live',
-        sectionSubtitle: 'Preview builder overlays, background engines, and KPI funnels tuned for conversion.',
+        sectionSubtitle: 'Customize this site to preview commerce overlays, conversion-ready backgrounds, and KPI funnels.',
       },
       cta: {
         primary: 'Plan a Commerce Revamp',
@@ -207,7 +207,7 @@ export const industryProfiles: IndustryProfile[] = [
       },
       demos: {
         sectionTitle: 'Security systems, demonstrated live',
-        sectionSubtitle: 'Explore builder overlays, hardened visuals, and KPI funnels for risk teams.',
+        sectionSubtitle: 'Customize this site to preview hardened overlays, dark background profiles, and KPI funnels for risk teams.',
       },
       cta: {
         primary: 'Plan a Secure Build',

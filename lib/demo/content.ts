@@ -27,12 +27,12 @@ export const DEFAULT_CONTENT: DemoContent = {
     subtitle:
       'From advertising & SEO to enterprise-grade software, we design, build, and automate systems that grow and scale your business.',
     ctaPrimary: 'Start Your Project',
-    ctaSecondary: 'See Our Work',
+    ctaSecondary: 'See Examples',
   },
   demos: {
     sectionTitle: 'Demo platform, engineered for control',
     sectionSubtitle:
-      'Launch four in-place modules that simulate builder overlays, background engines, funnel simulators, and industry skins.',
+      'Customize this site in real time - these showcases highlight our configurable design system and elegant UX.',
     cards: demoCards.map((card) => ({
       id: card.id,
       title: card.title,
