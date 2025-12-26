@@ -1,15 +1,13 @@
 'use client'
 
 import { AnimatePresence, motion, useDragControls } from 'framer-motion'
-import { X } from 'lucide-react'
-import { useMemo, useRef } from 'react'
+import { GripVertical, X } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import LiquidGlass from '@/components/ui/LiquidGlass'
 import { Button } from '@/components/ui/button'
-import { buildGlassVars } from '@/lib/demo/glass'
 import { cn } from '@/lib/utils'
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery'
 import { useDemoEngine } from '@/components/demo/DemoEngineProvider'
-import { useDemoEffects } from '@/lib/demo/effects'
 
 const STATUS_STYLES: Record<string, string> = {
   saved: 'bg-emerald-500/15 text-emerald-200 border-emerald-400/30',
@@ -25,19 +23,20 @@ export default function DemoShell() {
     shellState,
     resetAllDemos,
   } = useDemoEngine()
-  const glass = useDemoEffects((state) => state.glass)
   const isMobile = useMediaQuery('(max-width: 768px)')
   const constraintsRef = useRef<HTMLDivElement | null>(null)
   const dragControls = useDragControls()
+  const [isDragging, setIsDragging] = useState(false)
 
   const activeDemo = useMemo(
     () => registry.find((demo) => demo.id === openDemoId),
     [openDemoId, registry],
   )
-  const panelGlass = useMemo(
-    () => buildGlassVars(glass.tintShift, Math.min(1, glass.opacity * 1.2 + 0.08)),
-    [glass.opacity, glass.tintShift],
-  )
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+    document.body.classList.toggle('demo-dragging', isDragging)
+    return () => document.body.classList.remove('demo-dragging')
+  }, [isDragging])
 
   if (!activeDemo) return null
 
@@ -88,10 +87,10 @@ export default function DemoShell() {
           variant="panel"
           className={cn(
             panelClasses,
+            'demo-shell-panel',
             layout === 'side' && 'ml-auto md:mr-6',
             layout !== 'side' && 'mx-auto',
             isEditMode && 'pointer-events-auto',
-            canDragPanel && 'cursor-move',
           )}
           drag={canDragPanel}
           dragListener={false}
@@ -100,29 +99,31 @@ export default function DemoShell() {
           dragElastic={0.12}
           dragControls={dragControls}
           whileDrag={{ scale: 0.99 }}
-          style={
-            isEditMode
-              ? {
-                  ['--demo-glass-tint' as string]: panelGlass.tint,
-                  ['--demo-glass-surface' as string]: panelGlass.surface,
-                  ['--demo-glass-base' as string]: panelGlass.base,
-                }
-              : undefined
-          }
+          onDragStart={() => {
+            if (canDragPanel) setIsDragging(true)
+          }}
+          onDragEnd={() => {
+            if (canDragPanel) setIsDragging(false)
+          }}
           transition={{ type: 'spring', stiffness: 180, damping: 22 }}
           {...panelMotion}
         >
-          <header
-            className={cn(
-              'flex items-start justify-between gap-4 border-b border-white/10 px-6 py-5 shrink-0',
-              canDragPanel && 'cursor-move',
-            )}
-            onPointerDown={(event) => {
-              if (canDragPanel) {
+          {canDragPanel && (
+            <div
+              className="demo-shell-drag-handle"
+              onPointerDown={(event) => {
+                event.preventDefault()
+                event.stopPropagation()
                 dragControls.start(event)
-              }
-            }}
-          >
+              }}
+            >
+              <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-text-muted">
+                <GripVertical className="h-3.5 w-3.5" />
+                Drag Panel
+              </div>
+            </div>
+          )}
+          <header className="flex items-start justify-between gap-4 border-b border-white/10 px-6 py-5 shrink-0">
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.28em] text-text-muted">
                 <span className="text-demo-accent">Demo Engine</span>

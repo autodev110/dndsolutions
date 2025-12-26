@@ -195,7 +195,7 @@ h6 {
   -webkit-mask-image: radial-gradient(circle, transparent calc(100% - var(--lg-warp-width, 30px)), rgba(0, 0, 0, 0.98) 100%);
 }
 
-[data-demo-glass='frosted'] .liquid-glass {
+[data-demo-glass='frosted'] .liquid-glass:not(.demo-shell-panel) {
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow:
     0 12px 24px rgba(2, 5, 12, calc(var(--lg-shadow-strength, 0.35) * 0.7)),
@@ -206,15 +206,43 @@ h6 {
   -webkit-backdrop-filter: blur(calc(var(--lg-blur, 12px) * 1.25)) saturate(1.05) brightness(1.02) contrast(1.02);
 }
 
-[data-demo-glass='frosted'] .liquid-glass::before {
+[data-demo-glass='frosted'] .liquid-glass:not(.demo-shell-panel)::before {
   opacity: calc(var(--lg-noise-opacity, 0.16) * 0.55);
   mix-blend-mode: soft-light;
 }
 
-[data-demo-glass='frosted'] .liquid-glass::after {
+[data-demo-glass='frosted'] .liquid-glass:not(.demo-shell-panel)::after {
   opacity: 0.55;
   mix-blend-mode: soft-light;
   filter: saturate(85%) blur(0.4px);
+}
+
+.demo-shell-panel {
+  --demo-glass-tint: rgba(12, 18, 30, 0.88);
+  --demo-glass-surface: rgba(6, 9, 18, 0.96);
+  --demo-glass-base: rgba(3, 5, 10, 0.98);
+}
+
+.demo-shell-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  background: rgba(4, 7, 14, 0.7);
+}
+
+.demo-shell-drag-handle:active {
+  cursor: grabbing;
+}
+
+body.demo-dragging,
+body.demo-dragging * {
+  user-select: none;
 }
 
 .liquid-glass > *,
@@ -238,7 +266,7 @@ h6 {
   transition: background-color 300ms ease;
 }
 
-[data-demo-outline='true'] .liquid-glass {
+[data-demo-outline='true'] .liquid-glass:not(.demo-shell-panel) {
   outline: 1px solid rgba(255, 255, 255, 0.12);
   outline-offset: 3px;
 }

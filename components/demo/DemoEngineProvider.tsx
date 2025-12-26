@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react'
 import type { DemoId } from '@/lib/demo/demoData'
+import { DEMO_RESET_EVENT } from '@/lib/demo/constants'
 import { clearAllDemoStorage } from '@/lib/demo/storage'
 import { DemoEffectsProvider, useDemoEffectsActions } from '@/lib/demo/effects'
 import DemoEffectsRoot from '@/components/demo/DemoEffectsRoot'
@@ -94,6 +95,9 @@ function DemoEngineInner({ children }: { children: React.ReactNode }) {
     resetAllEffects()
     setShellState({})
     setOpenDemoId(null)
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event(DEMO_RESET_EVENT))
+    }
     pushToast('Cleared all demo data.', 'warning')
   }, [pushToast, resetAllEffects])
 

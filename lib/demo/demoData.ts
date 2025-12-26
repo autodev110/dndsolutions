@@ -45,7 +45,7 @@ export const demoCards: DemoCardData[] = [
   {
     id: 'industry-switcher',
     title: 'Industry Skin Switcher',
-    subtitle: 'Swap copy, accents, and icons for finance, healthcare, manufacturing, and SaaS.',
+    subtitle: 'Swap copy, accents, and icons across finance, healthcare, SaaS, retail, manufacturing, and security.',
     badge: 'Context',
     tags: ['Copy', 'Palette'],
     iconKey: 'industry',
