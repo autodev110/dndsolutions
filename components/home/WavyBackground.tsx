@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { CSSProperties, useEffect, useRef, useState } from 'react'
 import { createNoise2D } from 'simplex-noise'
 import clsx from 'clsx'
 
@@ -17,6 +17,7 @@ type WavyBackgroundProps = {
   thickness?: number
   thicknessVariation?: number
   className?: string
+  style?: CSSProperties
 }
 
 // Update this palette to change the default gradient spectrum
@@ -60,9 +61,39 @@ export function WavyBackground({
   // thicknessVariation: how much individual layers breathe between thin and thick (0 – 1; higher = more fluctuation)
   thicknessVariation = 0.95,
   className,
+  style,
 }: WavyBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const configRef = useRef({
+    colors,
+    speed,
+    blur,
+    opacity,
+    amplitude,
+    frequency,
+    colorDrift,
+    structureJitter,
+    centerDrift,
+    thickness,
+    thicknessVariation,
+  })
+
+  useEffect(() => {
+    configRef.current = {
+      colors,
+      speed,
+      blur,
+      opacity,
+      amplitude,
+      frequency,
+      colorDrift,
+      structureJitter,
+      centerDrift,
+      thickness,
+      thicknessVariation,
+    }
+  }, [amplitude, blur, centerDrift, colorDrift, colors, frequency, opacity, speed, structureJitter, thickness, thicknessVariation])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -126,10 +157,11 @@ export function WavyBackground({
     let time = 0
 
     const drawLayer = (config: LayerConfig, layerIndex: number) => {
-      ctx.globalAlpha = opacity * config.opacityScale
+      const current = configRef.current
+      ctx.globalAlpha = current.opacity * config.opacityScale
       const points: Array<{ x: number; top: number; bottom: number }> = []
-      const frequencyValue = Math.max(0.0005, frequency * config.frequencyScale)
-      const amplitudeValue = amplitude * config.amplitudeScale
+      const frequencyValue = Math.max(0.0005, current.frequency * config.frequencyScale)
+      const amplitudeValue = current.amplitude * config.amplitudeScale
       const layerTime = time * config.speedScale + layerIndex * 11
       const step = config.orientation === 'center' ? 14 : 20
       const horizontalFlow = time * 0.25 * config.speedScale
@@ -140,8 +172,10 @@ export function WavyBackground({
           x * frequencyValue * 1.6 + layerIndex * 53 + horizontalFlow * 1.3,
           layerTime * 0.7 + layerIndex * 29,
         )
-        const jitter = Math.max(0.25, 1 + jitterNoise * structureJitter)
-        const baselineDrift = centerDrift * turbulenceNoise(layerIndex * 17 + x * 0.0009 + horizontalFlow * 0.2, layerTime * 0.3 + layerIndex * 13)
+        const jitter = Math.max(0.25, 1 + jitterNoise * current.structureJitter)
+        const baselineDrift =
+          current.centerDrift *
+          turbulenceNoise(layerIndex * 17 + x * 0.0009 + horizontalFlow * 0.2, layerTime * 0.3 + layerIndex * 13)
         const baseline = height * config.baseHeight + baselineDrift * height
         const displacement = baseNoise * height * amplitudeValue * jitter
         const core = clamp(baseline + displacement, 0, height)
@@ -151,8 +185,8 @@ export function WavyBackground({
         const variationNoise = Math.abs(
           turbulenceNoise(layerIndex * 7 + layerTime * 0.18, x * 0.001 + layerIndex * 3 + horizontalFlow * 0.5),
         )
-        const variation = 0.4 + variationNoise * thicknessVariation
-        const thicknessBase = height * amplitudeValue * (config.thicknessScale ?? 0.4) * thickness * variation
+        const variation = 0.4 + variationNoise * current.thicknessVariation
+        const thicknessBase = height * amplitudeValue * (config.thicknessScale ?? 0.4) * current.thickness * variation
         const thicknessAmount = thicknessBase * (0.35 + thicknessNoise)
         points.push({
           x,
@@ -192,26 +226,27 @@ export function WavyBackground({
     }
 
     const draw = () => {
-      time += speed
+      const current = configRef.current
+      time += current.speed
       ctx.clearRect(0, 0, width, height)
-      ctx.filter = `blur(${blur}px)`
+      ctx.filter = `blur(${current.blur}px)`
 
-      if (colors.length > 1) {
+      if (current.colors.length > 1) {
         const gradient = ctx.createLinearGradient(-width * 0.1, 0, width * 1.1, height)
-        const spacing = colors.length > 2 ? 0.02 : 0
+        const spacing = current.colors.length > 2 ? 0.02 : 0
         let previousStop = 0
-        const stops = colors.map((color, index) => {
-          const baseStop = colors.length === 1 ? 0 : index / (colors.length - 1)
-          const driftScale = 0.5 * (1 / Math.max(1, colors.length - 1))
-          const drift = gradientNoise(index * 0.35, time * 0.2 + index) * colorDrift * driftScale
+        const stops = current.colors.map((color, index) => {
+          const baseStop = current.colors.length === 1 ? 0 : index / (current.colors.length - 1)
+          const driftScale = 0.5 * (1 / Math.max(1, current.colors.length - 1))
+          const drift = gradientNoise(index * 0.35, time * 0.2 + index) * current.colorDrift * driftScale
           let target = clamp(baseStop + drift)
           if (index === 0) {
             target = 0
-          } else if (index === colors.length - 1) {
+          } else if (index === current.colors.length - 1) {
             target = 1
           } else {
             const minStop = previousStop + spacing
-            const maxStop = 1 - (colors.length - index - 1) * spacing
+            const maxStop = 1 - (current.colors.length - index - 1) * spacing
             target = clamp(target, minStop, maxStop)
           }
           previousStop = target
@@ -220,7 +255,7 @@ export function WavyBackground({
         stops.forEach(({ color, stop }) => gradient.addColorStop(stop, color))
         ctx.fillStyle = gradient
       } else {
-        ctx.fillStyle = colors[0] ?? '#111731'
+        ctx.fillStyle = current.colors[0] ?? '#111731'
       }
 
       layerConfigs.forEach((config, index) => {
@@ -251,7 +286,7 @@ export function WavyBackground({
       window.removeEventListener('resize', handleWindowResize)
       resizeObserver?.disconnect()
     }
-  }, [amplitude, blur, centerDrift, colorDrift, colors, frequency, opacity, prefersReducedMotion, speed, structureJitter, thickness, thicknessVariation])
+  }, [prefersReducedMotion])
 
   if (prefersReducedMotion) {
     return (
@@ -261,6 +296,7 @@ export function WavyBackground({
           // Update this gradient if you want a different static fallback look
           backgroundImage:
             'radial-gradient(circle at 20% 20%, rgba(0, 169, 255, 0.35), transparent 55%), linear-gradient(135deg, rgba(5, 7, 15, 0.9), rgba(17, 23, 49, 0.9))',
+          ...style,
         }}
       />
     )
@@ -270,6 +306,7 @@ export function WavyBackground({
     <canvas
       ref={canvasRef}
       className={clsx('pointer-events-none absolute inset-0 z-0', className)}
+      style={style}
       aria-hidden
     />
   )

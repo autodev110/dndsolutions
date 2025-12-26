@@ -60,7 +60,7 @@ export default function ServiceShowcase() {
   return (
     <section ref={ref} className="my-20 space-y-8">
       <div className="flex flex-col gap-4 text-center">
-        <p className="text-sm uppercase tracking-[0.3em] text-accent">Solutions Lab</p>
+        <p className="text-sm uppercase tracking-[0.3em] text-demo-accent">Solutions Lab</p>
         <h2 className="font-heading text-3xl text-white md:text-5xl">Every Growth Lever, Engineered</h2>
         <p className="text-lg text-text-secondary md:text-xl">
           Scroll through integrated systems built to scale acquisitions, conversations, and conversions.
@@ -80,10 +80,10 @@ export default function ServiceShowcase() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ delay: index * 0.05, duration: 0.5 }}
             >
-              <Icon className="h-10 w-10 text-[#00FFAB]" />
+              <Icon className="h-10 w-10 text-demo-accent" />
               <h3 className="font-heading text-2xl text-white">{service.title}</h3>
               <p className="text-sm text-text-secondary">{service.description}</p>
-              <Link href="/contact" className="mt-auto text-sm font-semibold text-[#00FFAB] transition hover:text-accent">
+              <Link href="/contact" className="mt-auto text-sm font-semibold text-demo-accent transition hover:text-white">
                 Learn More →
               </Link>
             </LiquidGlass>
