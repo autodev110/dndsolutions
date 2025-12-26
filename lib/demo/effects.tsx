@@ -1,12 +1,13 @@
 'use client'
 
 import { createContext, useContext, useMemo, useSyncExternalStore } from 'react'
-import type { DemoContent } from './content'
+import type { DemoContent, DemoContentOverride } from './content'
 import { DEFAULT_CONTENT } from './content'
 import type { BackgroundEngineConfig } from './background'
 import { DEFAULT_BACKGROUND_CONFIG } from './background'
 import type { GlassSettings } from './glass'
 import { DEFAULT_GLASS_SETTINGS } from './glass'
+import type { DemoId } from './demoData'
 import type { IndustryProfile } from './industry'
 import { DEFAULT_LABELS } from './industry'
 import { DEFAULT_LAYOUT } from './layout'
@@ -19,7 +20,7 @@ export type CardDensity = 'comfortable' | 'compact' | 'spacious'
 export type DemoEffectsState = {
   content: {
     base: DemoContent
-    industryOverride: Partial<DemoContent> | null
+    industryOverride: DemoContentOverride | null
     editOverride: DemoContent | null
     effective: DemoContent
   }
@@ -27,7 +28,7 @@ export type DemoEffectsState = {
     heroVariant: HeroVariant
     spacingDensity: SpacingDensity
     cardDensity: CardDensity
-    demosOrder: string[]
+    demosOrder: DemoId[]
     sectionsOrder: string[]
   }
   background: BackgroundEngineConfig

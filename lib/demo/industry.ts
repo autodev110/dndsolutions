@@ -1,4 +1,4 @@
-import type { DemoContent } from './content'
+import type { DemoContentOverride } from './content'
 
 export type IndustryId = 'finance' | 'healthcare' | 'manufacturing' | 'saas' | 'retail' | 'security'
 
@@ -6,7 +6,7 @@ export type IndustryProfile = {
   id: IndustryId
   displayName: string
   description: string
-  copy: Partial<DemoContent>
+  copy: DemoContentOverride
   palette: {
     primary: string
     secondary: string

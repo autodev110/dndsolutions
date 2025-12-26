@@ -1,11 +1,12 @@
 import type { CardDensity, HeroVariant, SpacingDensity } from './effects'
+import type { DemoId } from './demoData'
 import { DEFAULT_CONTENT } from './content'
 
 export type LayoutState = {
   heroVariant: HeroVariant
   spacingDensity: SpacingDensity
   cardDensity: CardDensity
-  demosOrder: string[]
+  demosOrder: DemoId[]
   sectionsOrder: string[]
 }
 

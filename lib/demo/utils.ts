@@ -1,4 +1,4 @@
-import type { DemoContent } from './content'
+import type { DemoContent, DemoContentOverride } from './content'
 
 export const deepEqual = (a: unknown, b: unknown) => {
   try {
@@ -10,7 +10,7 @@ export const deepEqual = (a: unknown, b: unknown) => {
 
 export const mergeContent = (
   base: DemoContent,
-  ...overrides: Array<Partial<DemoContent> | null | undefined>
+  ...overrides: Array<DemoContentOverride | null | undefined>
 ): DemoContent => {
   const next: DemoContent = {
     hero: { ...base.hero },

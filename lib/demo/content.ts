@@ -21,6 +21,10 @@ export type DemoContent = {
   }
 }
 
+export type DemoContentOverride = Partial<Omit<DemoContent, 'demos'>> & {
+  demos?: Partial<DemoContent['demos']>
+}
+
 export const DEFAULT_CONTENT: DemoContent = {
   hero: {
     title: 'We Build Scalable Digital Systems.',

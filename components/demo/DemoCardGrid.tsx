@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 import EditableText from '@/components/demo/EditableText'
 import IndustryIcon from '@/components/demo/IndustryIcon'
 import { useEditModeState } from '@/components/demo/state/EditModeState'
+import type { DemoId } from '@/lib/demo/demoData'
 
 const densityClasses = {
   comfortable: 'gap-5 p-7',
@@ -18,7 +19,7 @@ const densityClasses = {
   spacious: 'gap-6 p-8',
 }
 
-const moveItem = (list: string[], fromIndex: number, toIndex: number) => {
+const moveItem = <T,>(list: T[], fromIndex: number, toIndex: number) => {
   const next = [...list]
   const [removed] = next.splice(fromIndex, 1)
   next.splice(toIndex, 0, removed)
@@ -33,8 +34,8 @@ export default function DemoCardGrid() {
   const layout = useDemoEffects((state) => state.layout)
   const { reorderCards, editModeActive } = useDemoEffects((state) => state.flags)
   const isMobile = useMediaQuery('(max-width: 768px)')
-  const [draggedId, setDraggedId] = useState<string | null>(null)
-  const [overId, setOverId] = useState<string | null>(null)
+  const [draggedId, setDraggedId] = useState<DemoId | null>(null)
+  const [overId, setOverId] = useState<DemoId | null>(null)
 
   const mergedCards = useMemo(() => {
     const overrides = new Map(content.demos.cards.map((card) => [card.id, card]))
@@ -51,7 +52,7 @@ export default function DemoCardGrid() {
     return [...(ordered as typeof fallback), ...missing]
   }, [layout.demosOrder, mergedCards])
 
-  const commitOrder = (nextOrder: string[]) => {
+  const commitOrder = (nextOrder: DemoId[]) => {
     setLayout({ demosOrder: nextOrder })
     setDraft((prev) => ({
       ...prev,
